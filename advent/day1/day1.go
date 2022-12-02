@@ -1,9 +1,8 @@
 package advent
 
 import (
+	"adventofcode/advent"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"strconv"
 	"strings"
 )
@@ -20,14 +19,6 @@ type highestValues struct {
 
 func (values *highestValues) Sum() int {
 	return values.first.amount + values.second.amount + values.third.amount
-}
-
-func readInput() string {
-	content, err := ioutil.ReadFile("advent/day1/input.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	return string(content)
 }
 
 func findHighestValues(elementCount int, highestValues *highestValues) {
@@ -64,7 +55,7 @@ func splitElves(input string, highestValues *highestValues) {
 }
 
 func Day1() {
-	input := readInput()
+	input := advent.ReadInput("advent/day1/input.txt")
 	var highestValues = highestValues{
 		first: elfDetails{
 			amount: 0,
