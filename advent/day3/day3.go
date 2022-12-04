@@ -13,8 +13,7 @@ const (
 
 func Day3() {
 	input := advent.ReadInput("advent/day3/input.txt")
-	inputArray := splitInput(input)
-	elvenRucksacks := inputArray[:len(inputArray)-1]
+	elvenRucksacks := input.Split("\n")
 	examineRucksacks(elvenRucksacks)
 	examineBadges(elvenRucksacks)
 }
@@ -52,10 +51,6 @@ func getLetterValues() map[string]int {
 		letterValues[strings.ToUpper(string(letter))] = letterIndex + 27
 	}
 	return letterValues
-}
-
-func splitInput(input string) []string {
-	return strings.Split(input, "\n")
 }
 
 func examineRucksacks(rucksacks []string) {

@@ -39,9 +39,9 @@ func findHighestValues(elementCount int, highestValues *highestValues) {
 	highestValues.first.amount = elementCount
 }
 
-func splitElves(input string, highestValues *highestValues) {
-	elfStrings := strings.Split(input, "\n\n")
-	for _, element := range elfStrings {
+func splitElves(input []string, highestValues *highestValues) {
+
+	for _, element := range input {
 		elementCount := 0
 		elfElements := strings.Split(element, "\n")
 		for _, item := range elfElements {
@@ -67,7 +67,7 @@ func Day1() {
 			amount: 0,
 		},
 	}
-	splitElves(input, &highestValues)
+	splitElves(input.Split("\n\n"), &highestValues)
 
 	fmt.Println(highestValues)
 	fmt.Println(highestValues.Sum())
