@@ -46,11 +46,6 @@ func shiftArray(crates []string) [][]string {
 	}
 	return newCrates
 }
-
-const (
-	numbers = "123456789"
-)
-
 func formatInstructions(instructions []string) [][]int {
 	intArray := [][]int{}
 	for _, element := range instructions {
@@ -102,9 +97,7 @@ func separateInstructions(input []string) ([]string, [][]int) {
 	}
 	return formatCrates(crates), formatInstructions(instructions)
 }
-
 func rearrangeBoxes(boxes []string, instructions [][]int, stacked bool) string {
-
 	rearrangedBoxes := shiftArray(boxes)
 	for _, instruction := range instructions {
 		numberOfItems := instruction[0]
@@ -122,13 +115,11 @@ func rearrangeBoxes(boxes []string, instructions [][]int, stacked bool) string {
 			rearrangedDest := rearrangedBoxes[destColumn]
 			rearrangedSource := rearrangedBoxes[sourceColumn]
 			slice := len(rearrangedBoxes[sourceColumn]) - numberOfItems
-			// fmt.Printf("%v: Taking %v items from %v to %v\n", instructionIndex, numberOfItems, rearrangedDest, rearrangedSource)
 			rearrangedDest = append(rearrangedDest, rearrangedSource[slice:]...)
 			rearrangedSource = rearrangedSource[:slice]
 			rearrangedBoxes[destColumn] = rearrangedDest
 			rearrangedBoxes[sourceColumn] = rearrangedSource
 		}
-		// fmt.Printf("Rearranged: %v,\n", rearrangedBoxes)
 	}
 	answer := ""
 	for _, arr := range rearrangedBoxes {
