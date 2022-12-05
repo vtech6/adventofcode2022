@@ -12,7 +12,7 @@ const (
 )
 
 func Day3() {
-	input := advent.ReadInput("advent/day3/input.txt")
+	input := advent.ReadInput("day3")
 	elvenRucksacks := input.Split("\n")
 	examineRucksacks(elvenRucksacks)
 	examineBadges(elvenRucksacks)

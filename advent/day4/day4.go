@@ -8,7 +8,7 @@ import (
 )
 
 func Day4() {
-	input := advent.ReadInput("advent/day4/input.txt")
+	input := advent.ReadInput("day4")
 	pairsOfElves := input.Split("\n")
 	containedPairCount, overlappingPairCount := checkElvenPairs(pairsOfElves)
 	fmt.Printf("Contained pair count: %v,\nOverlapping pair count: %v\n", containedPairCount, overlappingPairCount)

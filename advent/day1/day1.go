@@ -55,7 +55,7 @@ func splitElves(input []string, highestValues *highestValues) {
 }
 
 func Day1() {
-	input := advent.ReadInput("advent/day1/input.txt")
+	input := advent.ReadInput("day1")
 	var highestValues = highestValues{
 		first: elfDetails{
 			amount: 0,

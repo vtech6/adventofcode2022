@@ -7,7 +7,7 @@ import (
 )
 
 func Day2() {
-	input := advent.ReadInput("advent/day2/input.txt")
+	input := advent.ReadInput("day2")
 	formattedInput := input.Split("\n")
 	_, _, overallScorePart1, overallScorePart2 := splitElementsAndCountScore(formattedInput)
 	fmt.Printf("Part 1 score: %v, Part 2 score: %v", overallScorePart1, overallScorePart2)
