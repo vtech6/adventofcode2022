@@ -8,7 +8,7 @@ import (
 )
 
 type _string struct {
-	value string
+	Value string
 }
 
 func ReadInput(directory string) _string {
@@ -16,11 +16,11 @@ func ReadInput(directory string) _string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return _string{value: string(content)}
+	return _string{Value: string(content)}
 }
 
 func (str *_string) Split(separator string) []string {
-	splitArray := strings.Split(str.value, separator)
+	splitArray := strings.Split(str.Value, separator)
 	return splitArray[:len(splitArray)-1]
 }
 
