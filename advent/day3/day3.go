@@ -11,7 +11,7 @@ const (
 	smallLetters = "abcdefghijklmnopqrstuvwxyz"
 )
 
-func Day3() {
+func Solve() {
 	input := advent.ReadInput("day3")
 	elvenRucksacks := input.Split("\n")
 	examineRucksacks(elvenRucksacks)

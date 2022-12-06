@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func Day6() {
+func Solve() {
 	input := advent.ReadInput("day6")
 	findMarker(input.Value)
 }

@@ -1,4 +1,4 @@
-package advent
+package day2
 
 import (
 	"adventofcode/advent"
@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func Day2() {
+func Solve() {
 	input := advent.ReadInput("day2")
 	formattedInput := input.Split("\n")
 	_, _, overallScorePart1, overallScorePart2 := splitElementsAndCountScore(formattedInput)

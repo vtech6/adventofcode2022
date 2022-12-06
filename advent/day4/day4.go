@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func Day4() {
+func Solve() {
 	input := advent.ReadInput("day4")
 	pairsOfElves := input.Split("\n")
 	containedPairCount, overlappingPairCount := checkElvenPairs(pairsOfElves)

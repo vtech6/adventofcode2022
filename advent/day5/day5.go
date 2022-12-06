@@ -11,7 +11,7 @@ const (
 	bigletters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 )
 
-func Day5() {
+func Solve() {
 	input := advent.ReadInput("day5")
 	formatInput(input.Split("\n"))
 }

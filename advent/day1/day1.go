@@ -1,4 +1,4 @@
-package advent
+package day1
 
 import (
 	"adventofcode/advent"
@@ -54,7 +54,7 @@ func splitElves(input []string, highestValues *highestValues) {
 	}
 }
 
-func Day1() {
+func Solve() {
 	input := advent.ReadInput("day1")
 	var highestValues = highestValues{
 		first: elfDetails{
