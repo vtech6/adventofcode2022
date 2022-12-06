@@ -17,6 +17,25 @@ type highestValues struct {
 	third  elfDetails
 }
 
+func Solve() {
+	input := advent.ReadInput("day1")
+	var highestValues = highestValues{
+		first: elfDetails{
+			amount: 0,
+		},
+		second: elfDetails{
+			amount: 0,
+		},
+		third: elfDetails{
+			amount: 0,
+		},
+	}
+	splitElves(input.Split("\n\n"), &highestValues)
+	fmt.Println(highestValues)
+	fmt.Println(highestValues.Sum())
+
+}
+
 func (values *highestValues) Sum() int {
 	return values.first.amount + values.second.amount + values.third.amount
 }
@@ -32,7 +51,6 @@ func findHighestValues(elementCount int, highestValues *highestValues) {
 	if elementCount < highestValues.first.amount {
 		highestValues.third.amount = highestValues.second.amount
 		highestValues.second.amount = elementCount
-
 		return
 	}
 	highestValues.second.amount = highestValues.first.amount
@@ -40,7 +58,6 @@ func findHighestValues(elementCount int, highestValues *highestValues) {
 }
 
 func splitElves(input []string, highestValues *highestValues) {
-
 	for _, element := range input {
 		elementCount := 0
 		elfElements := strings.Split(element, "\n")
@@ -52,24 +69,4 @@ func splitElves(input []string, highestValues *highestValues) {
 		}
 		findHighestValues(elementCount, highestValues)
 	}
-}
-
-func Solve() {
-	input := advent.ReadInput("day1")
-	var highestValues = highestValues{
-		first: elfDetails{
-			amount: 0,
-		},
-		second: elfDetails{
-			amount: 0,
-		},
-		third: elfDetails{
-			amount: 0,
-		},
-	}
-	splitElves(input.Split("\n\n"), &highestValues)
-
-	fmt.Println(highestValues)
-	fmt.Println(highestValues.Sum())
-
 }

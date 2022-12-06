@@ -26,7 +26,6 @@ func examineBadges(rucksacks []string) {
 		groupedRucksacks[groupIndex] = append(group, rucksack)
 	}
 	letterValues := getLetterValues()
-
 	totalBadgeValue := 0
 	for _, rucksack := range groupedRucksacks {
 		repeated := ""

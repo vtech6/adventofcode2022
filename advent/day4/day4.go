@@ -33,7 +33,6 @@ func checkElvenPairs(pairs []string) (int, int) {
 }
 
 func getPairRange(pair string) []int64 {
-
 	splitRange := strings.Split(pair, "-")
 	lowRange, _ := strconv.ParseInt(splitRange[0], 32, 0)
 	highRange, _ := strconv.ParseInt(splitRange[1], 32, 0)

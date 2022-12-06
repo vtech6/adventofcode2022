@@ -19,7 +19,6 @@ func part1(shapes []string) int {
 		"B": 2,
 		"C": 3,
 	}
-
 	score := 0
 	score += shapeValue[shapes[1]]
 	transformedShapes := []int{shapeValue[shapes[0]], shapeValue[shapes[1]]}
@@ -76,10 +75,8 @@ func splitElementsAndCountScore(input []string) ([]interface{}, []interface{}, i
 		totalScorePart1 := part1(decipheredShapes)
 		totalScorePart2 := part1(winDrawLose)
 		arrayWithScores = append(arrayWithScores, totalScorePart1)
-		// fmt.Printf("%v -> %v - %v\n", shapes, winDrawLose, totalScorePart2)
 		overallScorePart1 += totalScorePart1
 		overallScorePart2 += totalScorePart2
-
 	}
 	return decipheredArray, arrayWithScores, overallScorePart1, overallScorePart2
 }
