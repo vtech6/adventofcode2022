@@ -7,16 +7,6 @@ import (
 	"strings"
 )
 
-type elfDetails struct {
-	amount int
-}
-
-type highestValues struct {
-	first  elfDetails
-	second elfDetails
-	third  elfDetails
-}
-
 func Solve() {
 	input := advent.ReadInput("day1")
 	var highestValues = highestValues{
@@ -33,7 +23,16 @@ func Solve() {
 	splitElves(input.Split("\n\n"), &highestValues)
 	fmt.Println(highestValues)
 	fmt.Println(highestValues.Sum())
+}
 
+type elfDetails struct {
+	amount int
+}
+
+type highestValues struct {
+	first  elfDetails
+	second elfDetails
+	third  elfDetails
 }
 
 func (values *highestValues) Sum() int {
