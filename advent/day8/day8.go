@@ -1,17 +1,20 @@
 package day8
 
 import (
+	"adventofcode/advent"
 	"fmt"
 	"strconv"
-	"strings"
+
+	"github.com/samber/lo"
 )
 
 func Solve() {
-	// input := advent.ReadInput("day8")
-	// splitInput := input.Split("\n")
+	input := advent.ReadInput("day8")
+	splitInput := input.Split("\n")
 	// testInput := strings.Split("30373\n25512\n65332\n33549\n35390", "\n")
-	testInput2 := strings.Split("111111\n1543451\n1443441\n1543451\n111111", "\n")
-	formattedInput := formatInput(testInput2)
+	// testInput2 := strings.Split("1111111\n1543451\n1443441\n1543451\n1111111", "\n")
+	// testInput3 := strings.Split("123\n456\n789", "\n")
+	formattedInput := formatInput(splitInput)
 	findVisibleTrees(formattedInput)
 }
 
@@ -29,7 +32,6 @@ func formatInput(input []string) [][]int {
 }
 
 func findVisibleTrees(trees [][]int) {
-	fmt.Println(trees)
 	visibleTrees := [][]bool{}
 	for vIndex, row := range trees {
 		visibleTrees = append(visibleTrees, []bool{})
@@ -41,41 +43,39 @@ func findVisibleTrees(trees [][]int) {
 			}
 		}
 	}
+	treesPivot := make([][]int, len(trees[0]))
+	for index, _ := range treesPivot {
+		treesPivot[index] = make([]int, len(trees))
+	}
 
-	for verticalIndex, row := range trees {
-		tallestTreesH := []int{0, 0}
-		for horizontalIndex, _ := range row {
-			if horizontalIndex < len(row)/2+1 {
-				leftTree := row[horizontalIndex]
-				lastIndex := len(row) - horizontalIndex - 1
-				rightTree := row[lastIndex]
-				if leftTree > tallestTreesH[0] {
-					visibleTrees[verticalIndex][horizontalIndex] = true
-					tallestTreesH[0] = leftTree
-
-				}
-				if rightTree > tallestTreesH[1] {
-					visibleTrees[verticalIndex][lastIndex] = true
-					tallestTreesH[1] = rightTree
-				}
-			}
+	for column := 0; column < len(trees[0]); column++ {
+		for row := 0; row < len(trees); row++ {
+			// treesPivot[0][0] = trees[len(trees)-1][0]
+			treesPivot[column][row] = trees[len(trees)-row-1][column]
 		}
 	}
-	for column := 0; column < len(trees[0]); column++ {
-		tallestTreesV := []int{0, 0}
-		for row := 0; row < len(trees); row++ {
-			if column < len(trees)/2+1 {
-				firstTree := trees[column][row]
-				lastIndex := len(trees) - 1
-				lastTree := trees[column][lastIndex]
-				if firstTree > tallestTreesV[0] {
-					visibleTrees[column][row] = true
-					tallestTreesV[0] = trees[column][row]
+	for rowIndex, row := range trees {
+		for itemIndex, item := range row {
+
+			leftSlice := row[:itemIndex]
+			rightSlice := row[itemIndex+1:]
+			upSlice := treesPivot[itemIndex][:len(trees)-rowIndex-1]
+			downSlice := treesPivot[itemIndex][len(trees)-rowIndex:]
+
+			allSlices := [][]int{leftSlice, rightSlice, upSlice, downSlice}
+			visibleInSlice := []bool{true, true, true, true}
+			for sliceIndex, slice := range allSlices {
+				for _, sliceItem := range slice {
+					if sliceItem >= item {
+						visibleInSlice[sliceIndex] = false
+					}
 				}
-				if lastTree > tallestTreesV[1] {
-					visibleTrees[column][lastIndex] = true
-					tallestTreesV[1] = trees[column][lastIndex]
-				}
+			}
+			if itemIndex == 1 && rowIndex == 3 {
+				fmt.Printf("Item: %v,Left: %v, Right: %v, Up: %v, Down: %v\n %v\n", item, leftSlice, rightSlice, upSlice, downSlice, visibleInSlice)
+			}
+			if lo.Contains(visibleInSlice, true) {
+				visibleTrees[rowIndex][itemIndex] = true
 			}
 		}
 	}
@@ -92,9 +92,17 @@ func findVisibleTrees(trees [][]int) {
 	fmt.Printf("%v\n", totalVisible)
 }
 
-func findHighestInRow() {
+// [1,2,3]
+// [4,5,6]
+// [7,8,9]
+// [10,11,12]
 
-}
+// [0][0] = [2][0]
+// [0][1] = [1][0]
+// [0][2] = [0][0]
+// [1][0] = [2][1]
+// [1][1] = [1][1]
+// [1][2] = [0][1]
 
 // [3 0 3 7 3]
 // [2 5 5 1 2]
@@ -107,6 +115,12 @@ func findHighestInRow() {
 // [true false false true true]
 // [true false true true true]
 // [true true false true true]]
+
+// [[true true true true true]
+//	[true true true false true]
+// [true true false true true]
+// [true true true false true]
+// [true true true true true]]
 
 // [[1 1 1 1 1 1]
 // [1 5 4 3 4 5 1]
