@@ -20,9 +20,8 @@ type Node struct {
 
 func makeDirs(input [][]string) {
 	fileSystem := make(map[string]Node)
-
 	currentDirectory := ""
-
+	totalSizePart2 := 0
 	for rowIndex, row := range input {
 		if row[0] == "cd" {
 			if row[1] == ".." {
@@ -44,6 +43,7 @@ func makeDirs(input [][]string) {
 
 		} else if row[0] != "ls" {
 			conv, _ := strconv.Atoi(row[0])
+			totalSizePart2 += conv
 			if value, ok := fileSystem[currentDirectory]; ok {
 				newSize := value.size + conv
 				fileSystem[currentDirectory] = Node{contains: value.contains, size: newSize}
@@ -60,19 +60,21 @@ func makeDirs(input [][]string) {
 			}
 		}
 	}
-	totalSize := 0
-	smallFileSystem := make(map[string]Node)
-	for key, value := range fileSystem {
+	freeSpace := 70000000 - totalSizePart2
+	smallestDir := 30000000
+	totalSizePart1 := 0
+	for _, value := range fileSystem {
 		if value.size < 100000 {
-			smallFileSystem[key] = value
-			totalSize += value.size
-
+			totalSizePart1 += value.size
+		}
+		if freeSpace+value.size > 30000000 {
+			if value.size < smallestDir {
+				smallestDir = value.size
+			}
 		}
 	}
-	// fmt.Println(smallFileSystem)
-	fmt.Printf("Total size of the directories: %v", totalSize)
+	fmt.Printf("Smallest dir size: %v\n", smallestDir)
 }
-
 func formatInput(input []string) [][]string {
 	newInput := [][]string{}
 	for _, row := range input {
