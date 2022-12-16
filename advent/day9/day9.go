@@ -12,10 +12,17 @@ import (
 
 func Solve() {
 
-	testInput := strings.Split("R 1,U 1,L 2,D 2,R 2,U 2,L 1,D 1", ",")
-	drawMap(testInput)
-	testInput2 := strings.Split("R 4,U 4,L 3,D 1,R 4,D 1,L 5,R 2", ",")
-	drawMap(testInput2)
+	// testInput := strings.Split("R 1,U 1,L 2,D 2,R 2,U 2,L 1,D 1", ",")
+	// drawMap(testInput)
+
+	// testInput := strings.Split("R 2,U 2,D 4,L 1", ",")
+	// drawMap(testInput)
+
+	// testInput3 := strings.Split("R 9,U 2,D 4", ",")
+	// drawMap(testInput3)
+
+	// testInput2 := strings.Split("R 5,U 8,L 8,D 3,R 17,D 10,L 25,R 20", ",")
+	// drawMap(testInput2)
 
 	input := advent.ReadInput("day9")
 	splitInput := input.Split("\n")
@@ -29,84 +36,84 @@ type positions struct {
 
 type SnakeMap struct {
 	positions []positions
+	steps     int
+	direction string
+	xAxis     int
+	yAxis     int
+	snek      []positions
+	length    int
+}
+
+func (snakeMap *SnakeMap) addPosition() {
+	for step := 0; step < snakeMap.steps; step++ {
+		var position positions
+		switch snakeMap.direction {
+		case "D":
+			snakeMap.yAxis -= 1
+		case "U":
+			snakeMap.yAxis += 1
+		case "R":
+			snakeMap.xAxis += 1
+		case "L":
+			snakeMap.xAxis -= 1
+		default:
+			return
+		}
+		position = positions{snakeMap.xAxis, snakeMap.yAxis}
+		snakeMap.positions = append(snakeMap.positions, position)
+		snakeMap.drawTrail()
+	}
+}
+
+func (snakeMap *SnakeMap) drawTrail(head ...positions) {
+	var leadPositions []positions
+	if len(head) != 0 {
+		leadPositions = head
+	} else {
+		leadPositions = snakeMap.positions
+	}
+	snakeLen := len(leadPositions)
+	lastIndex := snakeLen - 1
+	if snakeLen > snakeMap.length {
+		lastPosition := leadPositions[lastIndex]
+		previousPosition := leadPositions[lastIndex-1]
+		xAx := math.Abs(float64(lastPosition.x - snakeMap.snek[lastIndex-1].x))
+		yAx := math.Abs(float64(lastPosition.y - snakeMap.snek[lastIndex-1].y))
+		// lastSnakeIndex := len(snakeMap.snek) - 1
+		// lastSnakePosition := snakeMap.snek[lastSnakeIndex]
+		if xAx+yAx >= 2 {
+
+			bothAx := lastPosition.x != snakeMap.snek[lastIndex-1].x && lastPosition.y != snakeMap.snek[lastIndex-1].y
+			if xAx+yAx >= 3 {
+				snakeMap.snek = append(snakeMap.snek, previousPosition)
+			} else if bothAx {
+				snakeMap.snek = append(snakeMap.snek, snakeMap.snek[lastIndex-1])
+			} else {
+				snakeMap.snek = append(snakeMap.snek, previousPosition)
+			}
+		} else {
+			snakeMap.snek = append(snakeMap.snek, snakeMap.snek[lastIndex-1])
+		}
+	}
+}
+
+func (snakeMap *SnakeMap) setLength(length int) {
+	for i := 0; i <= length-1; i++ {
+		snakeMap.snek = append(snakeMap.snek, positions{0, 0})
+	}
+	snakeMap.length = length
 }
 
 func drawMap(input []string) {
-	yAxis := 0
-	yAxisMax := 0
-	yAxisMin := 0
-	xAxis := 0
-	xAxisMax := 0
-	xAxisMin := 0
-	headMap := SnakeMap{positions: []positions{}}
-	snekMap := SnakeMap{positions: []positions{}}
+	headMap := SnakeMap{positions: []positions{{0, 0}}}
+	headMap.setLength(2)
 	for _, row := range input {
 		splitRow := strings.Split(row, " ")
 		conv, _ := strconv.Atoi(splitRow[1])
-		if splitRow[0] == "D" {
-			for step := 0; step < conv; step++ {
-				headMap.addPosition(xAxis, yAxis-step)
-			}
-			yAxis -= conv
-			if yAxis < yAxisMin {
-				yAxisMin = yAxis
-			}
-		}
-		if splitRow[0] == "U" {
-			for step := 0; step < conv; step++ {
-				headMap.addPosition(xAxis, yAxis+step)
-			}
-			yAxis += conv
-			if yAxis > yAxisMax {
-				yAxisMax = yAxis
-			}
-		}
-		if splitRow[0] == "R" {
-			for step := 0; step < conv; step++ {
-				headMap.addPosition(xAxis+step, yAxis)
-			}
-			xAxis += conv
-			if xAxis > xAxisMax {
-				xAxisMax = xAxis
-			}
-		}
-		if splitRow[0] == "L" {
-			for step := 0; step < conv; step++ {
-				headMap.addPosition(xAxis-step, yAxis)
-			}
-			xAxis -= conv
-			if xAxis < xAxisMin {
-				xAxisMin = xAxis
-			}
-		}
+		direction := splitRow[0]
+		headMap.direction = direction
+		headMap.steps = conv
+		headMap.addPosition()
 	}
-	drawTail(headMap.positions, &snekMap)
-	fmt.Printf("Unique positions for head: %v, tail: %v\n", len(lo.Uniq(headMap.positions)), len(lo.Uniq(snekMap.positions)))
-}
-func (snakeMap *SnakeMap) addPosition(xValue int, yValue int) {
-	position := positions{x: xValue, y: yValue}
-	snakeMap.positions = append(snakeMap.positions, position)
-}
-func drawTail(headPositions []positions, snekMap *SnakeMap) {
-	snekMap.positions = []positions{{x: 0, y: 0}, {x: 0, y: 0}}
-	for posIndex, position := range headPositions {
-		if posIndex > 1 {
-			prevPosition := headPositions[posIndex-1]
-			xAx := math.Abs(float64(position.x - snekMap.positions[posIndex-1].x))
-			yAx := math.Abs(float64(position.y - snekMap.positions[posIndex-1].y))
-			// distance := math.Abs(float64(position.x - tailPosition.x + position.y - tailPosition.y))
-			if xAx+yAx >= 2 {
-				bothAx := position.x != snekMap.positions[posIndex-1].x && position.y != snekMap.positions[posIndex-1].y
-				if xAx+yAx >= 3 {
-					snekMap.positions = append(snekMap.positions, prevPosition)
-				} else if bothAx {
-					snekMap.positions = append(snekMap.positions, snekMap.positions[posIndex-1])
-				} else {
-					snekMap.positions = append(snekMap.positions, prevPosition)
-				}
-			} else {
-				snekMap.positions = append(snekMap.positions, snekMap.positions[posIndex-1])
-			}
-		}
-	}
+	fmt.Printf("SNEK: %v\n", len(lo.Uniq(headMap.snek)))
 }
